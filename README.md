@@ -3,7 +3,7 @@
 Expo Go test showcase.
 
 
-# To Run:
+## To Run:
 
 npm install
 
