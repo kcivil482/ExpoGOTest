@@ -10,41 +10,39 @@ import { ThemedView } from '@/components/ThemedView';
 export default function HomeScreen() {
   const [notes, setNotes] = useState([])
   const [text, setNote] = useState([])
-    type ItemProps = {title: string};
+  type ItemProps = {title: string};
 
   const ListItem = ({text}: ItemProps) =>(
     <View style={styles.listItem}>
       <Text style={styles.text}>{text}</Text>
     </View>
-      );
-    
+  );
+  
   const getData = async ()=>{
     const res = await fetch("/api/Notes");
     const result = await res.json();
-    console.log(result.data)
-    setNotes(result.data)
+    console.log(result.notes)
+    setNotes(result.notes)
   }
-   const postData = async ()=>{
+  const postData = async ()=>{
     console.log(text)
     const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text })
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
     };
     const res = await fetch("/api/Notes", requestOptions);
     const result = await res.json();
     console.log(result)
+    await getData()
   }
   const handleSubmit = ()=>{
     postData()
-    getData()
   }
   useEffect(() => {
     getData()
   }, [])
   
-
-
   return (
     <View >
       <View style={styles.titleContainer}>
@@ -88,12 +86,12 @@ const styles = StyleSheet.create({
     borderStyle:"solid",
     borderColor:"white",
     width:"50%",
-    margin:"auto",
     marginTop:15,
     marginBottom:15
   },
   button:{
-    height:5
+    height:5,
+    margin: 0
   },
   InputContainer:{
     flexDirection:"row",
