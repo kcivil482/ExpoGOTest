@@ -1,7 +1,7 @@
 import { Image } from 'expo-image';
 import { useEffect, useState } from 'react';
 import { Platform, StyleSheet,View, Text,FlatList,TextInput,Button } from 'react-native';
-
+import  {Link}  from 'expo-router';
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
@@ -69,7 +69,7 @@ export default function HomeScreen() {
         renderItem={({item}) => <ListItem text = {item.text} id={item.id} />}
         keyExtractor={item => item.id}
         data={notes}/>
-
+      <Link href="/camera" style={styles.text}>Link to Camera</Link>
     </View>
   );
 }
