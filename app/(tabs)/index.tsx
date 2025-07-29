@@ -10,11 +10,12 @@ import { ThemedView } from '@/components/ThemedView';
 export default function HomeScreen() {
   const [notes, setNotes] = useState([])
   const [text, setNote] = useState([])
-  type ItemProps = {title: string};
+  type ItemProps = {text: string,id:string};
 
-  const ListItem = ({text}: ItemProps) =>(
+  const ListItem = ({text,id}: ItemProps) =>(
     <View style={styles.listItem}>
       <Text style={styles.text}>{text}</Text>
+      <Button  title={"X"} onPress={()=>deleteTask(id)}></Button>
     </View>
   );
   
@@ -36,6 +37,18 @@ export default function HomeScreen() {
     console.log(result)
     await getData()
   }
+  const deleteTask = async (id) =>{
+    console.log("delete task:" , id)
+    const requestOptions = {
+      method: 'DELETE'
+    };
+    const res = await fetch(`/api/Notes?id=${id}`, requestOptions);
+    const result = await res.json();
+    console.log(result)
+    await getData()
+
+
+  }
   const handleSubmit = ()=>{
     postData()
   }
@@ -53,7 +66,7 @@ export default function HomeScreen() {
         <Button onPress={handleSubmit} style={styles.button} title="submit" ></Button>
       </View>
       <FlatList  
-        renderItem={({item}) => <ListItem text = {item.text}  />}
+        renderItem={({item}) => <ListItem text = {item.text} id={item.id} />}
         keyExtractor={item => item.id}
         data={notes}/>
 
@@ -71,13 +84,15 @@ const styles = StyleSheet.create({
   },
   text:{
     color:'white',
+    marginLeft: 15
   },
   listItem:{
+    flexDirection:"row",
+    justifyContent:"space-between",
     margin:"auto",
     width:"80%",
     height:40,
     alignItems:'center',
-    justifyContent:"center",
     backgroundColor:'gray'
   },
   textInput:{
@@ -90,12 +105,15 @@ const styles = StyleSheet.create({
     marginBottom:15
   },
   button:{
-    height:5,
-    margin: 0
+    height:10,
   },
   InputContainer:{
     flexDirection:"row",
     alignItems:"center",
     justifyContent:"space-around"
+  },
+  removeButton:{
+    margin:15,
+    backgroundColor:"red"
   }
 });
